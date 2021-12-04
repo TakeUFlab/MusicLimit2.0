@@ -6,7 +6,7 @@
 開發語言 Language: Js, html , css, vue component  
 ## 功能 TODO
 - 上一代的所有功能 Include All function in last version
-- 新贈剩餘時間到計時(hh:mm) show rest time (hh:mm)
+- 新贈剩餘時間倒數(hh:mm:ss) show rest time (hh:mm:ss)
 - 響應式設計 RWD
 ## 產品資訊 Product Information
 網址 Url: [MusicLimit2.0 URL](https://takeuflab.github.io/MusicLimit2.0/dist/)  

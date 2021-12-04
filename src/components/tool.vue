@@ -25,7 +25,7 @@
             <button @click="countDown()" v-else>Start</button>
         </div>
         <div v-if="Start" class="countDownTime">
-                <p>{{ hourL }} : {{ minL }}</p>
+                <p>{{ hourL }} : {{ minL }} : {{ secL }}</p>
         </div>
     </div>
 </template>
@@ -50,6 +50,7 @@ export default {
             forIframeDisplay: false,
             hourL: '00',
             minL: '00',
+            secL: '00',
         }
     },
     methods: {
@@ -74,43 +75,39 @@ export default {
         countDown() {
             let hour = this.hour;
             let min = this.min;
-            this.hourL = hour < 10 ? "0" + hour : hour;
-            this.minL = min < 10 ? "0" + min : min;
-            this.Start = true;
+            let sec = 0;
             if(hour === 0 && min === 0) {
-                this.Start = false;
                 return;
             }
-            if(hour === 0) {
-                let down = setInterval(() => {
-                    min--;
-                    if (min === 0) { 
-                        clearInterval(down); 
-                        this.forIframeDisplay = false; 
-                        this.Start = false;
-                        return;
-                    }
-                    this.minL = min < 10 ? "0" + min : min;
-                }, 60000);                
-            }else if(hour !== 0){
-                let down = setInterval(() => {
-                    if (min === 0 && hour === 0) { 
-                        clearInterval(down);
-                        this.forIframeDisplay = false; 
-                        this.Start = false;
-                        return;
-                    }else if(hour !== 0 && min === 0){
-                        hour--;
-                        min += 60;
-                    }
-                    min--;
-                    this.minL = min < 10 ? "0" + min : min;
-                    this.hourL = hour < 10 ? "0" + hour : hour;
-                }, 60000);
-            }
+            this.Start = true;
+            let totalSec = hour*3600 + min*60;
+            this.hourL = hour < 10 ? "0" + hour : hour;
+            this.minL = min < 10 ? "0" + min : min;
+            this.secL = '00';
+            let down = setInterval(() => {
+                totalSec--;
+                if(totalSec == 0) {
+                    clearInterval(down);
+                    this.Start = false;
+                    this.forIframeDisplay = false;
+                    setTimeout(() => {
+                        alert('Times Up!!');
+                    }, 300);
+                    return;
+                }
+                hour = totalSec/3600;
+                hour = ~~hour;
+                min = (totalSec - hour*3600)/60;
+                min = ~~min;
+                sec = totalSec - hour*3600 - min*60;
+                this.hourL = hour < 10 ? "0" + hour : hour;
+                this.minL = min < 10 ? "0" + min : min;
+                this.secL = sec < 10 ? "0" + sec : sec;
+            }, 1000);
         }
     }
 }
+
 // https://www.youtube.com/watch?v=qDL3zhB8-MM
 </script>
 
