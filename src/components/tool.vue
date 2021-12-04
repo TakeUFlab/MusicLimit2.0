@@ -77,6 +77,10 @@ export default {
             this.hourL = hour < 10 ? "0" + hour : hour;
             this.minL = min < 10 ? "0" + min : min;
             this.Start = true;
+            if(hour === 0 && min === 0) {
+                this.Start = false;
+                return;
+            }
             if(hour === 0) {
                 let down = setInterval(() => {
                     min--;
@@ -126,7 +130,7 @@ export default {
 
 .tool > h1:first-child {
     color: #000;
-    font-weight: lighter;
+    font-weight: 300;
     margin-bottom: 10px;
 }
 
@@ -189,7 +193,7 @@ export default {
     border: 2px solid #0088ff;
     border-radius: 5px;
     padding: 2px 2px 2px 1px;
-    width: 80px;
+    width: 70px;
     margin-right: 5px;
     margin-bottom: 10px;
 }
@@ -209,9 +213,10 @@ export default {
     padding: 2px 2px 2px 1px;
     height: 26px;
     width: 80px;
-    margin-top: 21px;
+    margin-top: 19.5px;
     background-color: #0088ff;
     color: #fff;
+    font-weight: 300;
 }
 
 .countDownTime>p {
