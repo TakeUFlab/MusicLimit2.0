@@ -9,5 +9,5 @@
 - 新贈剩餘時間到計時(hh:mm) show rest time (hh:mm)
 - 響應式設計 RWD
 ## 產品資訊 Product Information
-網址 Url: [MusicLimit2.0 URL](https://takeuflab.github.io/MusicLimit2.0/dist/)
-版本 version: 2.0.1
+網址 Url: [MusicLimit2.0 URL](https://takeuflab.github.io/MusicLimit2.0/dist/)  
+版本 version: 2.0.1  
