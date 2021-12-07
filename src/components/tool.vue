@@ -97,7 +97,8 @@ export default {
                 }
                 hour = totalSec/3600;
                 hour = ~~hour;
-                min = (totalSec - hour*3600)/60;
+                min = totalSec%3600;
+                min = min/60;
                 min = ~~min;
                 sec = totalSec - hour*3600 - min*60;
                 this.hourL = hour < 10 ? "0" + hour : hour;
