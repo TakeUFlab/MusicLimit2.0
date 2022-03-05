@@ -1,10 +1,14 @@
 <template>
     <div class="tool" @load="restart()">
         <h1>
-            {{ logo[0] }}<span>{{ logo[1] }}</span>
+            {{ logo[0] }}
+            <span>{{ logo[1] }}</span>
         </h1>
         <div class="search">
-            <input v-model="videoUrl" type="text" />
+            <input v-model="videoUrl" list="options" type="text" />
+            <datalist id="options">
+                <option v-for="item in options" :key="item" :value="item"></option>
+            </datalist>
             <button @click="searchVideo()">Go</button>
         </div>
         <div class="video">
@@ -18,14 +22,15 @@
                 <input v-model="hour" type="number" min="0" />
             </div>
             <div class="aset">
-                <p style="display: inline-block;">min</p><br>
+                <p style="display: inline-block;">min</p>
+                <br />
                 <input v-model="min" type="number" min="0" />
             </div>
             <button v-if="Start">Started</button>
             <button @click="countDown()" v-else>Start</button>
         </div>
         <div v-if="Start" class="countDownTime">
-                <p>{{ hourL }} : {{ minL }} : {{ secL }}</p>
+            <p>{{ hourL }} : {{ minL }} : {{ secL }}</p>
         </div>
     </div>
 </template>
@@ -37,6 +42,14 @@ export default {
     name: "tool",
     components: {
         youtubeIframeVue
+    },
+    created() {
+        let values = [], keys = Object.keys(localStorage);
+        let i = keys.length;
+        while (i--) {
+            values.push(localStorage.getItem(keys[i]));
+        }
+        this.options =  values;
     },
     data() {
         return {
@@ -51,6 +64,7 @@ export default {
             hourL: '00',
             minL: '00',
             secL: '00',
+            options: [],
         }
     },
     methods: {
@@ -64,7 +78,18 @@ export default {
                 this.forIframeDisplay = false;
                 this.videoProp = this.videoUrl;
                 this.forIframeDisplay = true;
+                localStorage.setItem(this.makeid(10), this.videoUrl)
             }
+        },
+        makeid(length) {
+            let result = '';
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let charactersLength = characters.length;
+            for (var i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() *
+                    charactersLength));
+            }
+            return result;
         },
         timesUp() {
             this.hour = 0;
@@ -76,17 +101,17 @@ export default {
             let hour = this.hour;
             let min = this.min;
             let sec = 0;
-            if(hour === 0 && min === 0) {
+            if (hour === 0 && min === 0) {
                 return;
             }
             this.Start = true;
-            let totalSec = hour*3600 + min*60;
+            let totalSec = hour * 3600 + min * 60;
             this.hourL = hour < 10 ? "0" + hour : hour;
             this.minL = min < 10 ? "0" + min : min;
             this.secL = '00';
             let down = setInterval(() => {
                 totalSec--;
-                if(totalSec == 0) {
+                if (totalSec == 0) {
                     clearInterval(down);
                     this.Start = false;
                     this.forIframeDisplay = false;
@@ -95,12 +120,12 @@ export default {
                     }, 300);
                     return;
                 }
-                hour = totalSec/3600;
+                hour = totalSec / 3600;
                 hour = ~~hour;
-                min = totalSec%3600;
-                min = min/60;
+                min = totalSec % 3600;
+                min = min / 60;
                 min = ~~min;
-                sec = totalSec - hour*3600 - min*60;
+                sec = totalSec - hour * 3600 - min * 60;
                 this.hourL = hour < 10 ? "0" + hour : hour;
                 this.minL = min < 10 ? "0" + min : min;
                 this.secL = sec < 10 ? "0" + sec : sec;
@@ -185,7 +210,7 @@ export default {
     font-weight: normal;
 }
 
-.setTime  input {
+.setTime input {
     outline: none;
     font-size: 1rem;
     border: 2px solid #0088ff;
@@ -196,7 +221,7 @@ export default {
     margin-bottom: 10px;
 }
 
-.aset>p {
+.aset > p {
     color: #5a5a5a;
     font-weight: lighter;
     text-transform: capitalize;
@@ -217,7 +242,7 @@ export default {
     font-weight: 300;
 }
 
-.countDownTime>p {
+.countDownTime > p {
     font-size: 1.2rem;
 }
 </style>
